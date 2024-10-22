@@ -9,6 +9,7 @@
 
 body {
   height: 100dvh;
+  font-family: "Poppins", sans-serif;
 }
 
 #root {
