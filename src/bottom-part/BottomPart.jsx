@@ -33,8 +33,8 @@ function Controls() {
 export function KeyboardCaps({ letter }) {
   return (
     <div
-      className="border border-white rounded-lg px-3 py-2 text-sm bg-slate-900/80 select-none"
-      style={{ boxShadow: "0 3px 0 0 white" }}
+      className="border border-slate-300/60 rounded-lg px-3 py-2 text-sm bg-slate-900/50 select-none aspect-square bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20"
+      style={{ boxShadow: "0 2px 0 0 rgb(203 213 225 / 0.9)" }}
     >
       {letter}
     </div>
@@ -44,8 +44,8 @@ export function KeyboardCaps({ letter }) {
 function EnterkeyIcon() {
   return (
     <div
-      className="border border-white rounded-lg px-4 py-2 text-sm bg-slate-900/80 select-none flex items-center gap-1"
-      style={{ boxShadow: "0 3px 0 0 white" }}
+      className="border border-slate-300/60 rounded-lg px-4 py-2 text-sm bg-slate-900/50 select-none flex items-center gap-1 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20"
+      style={{ boxShadow: "0 2px 0 0 rgb(203 213 225 / 0.9)" }}
     >
       Enter
       <span>

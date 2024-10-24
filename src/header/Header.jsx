@@ -95,8 +95,8 @@ function TimeAndDate() {
     <div className="absolute inset-0 w-full flex justify-center items-center">
       {dateTime ? (
         <div className="flex space-x-2 items-center gap-2">
-          <div className="flex gap-1 items-center border border-white/20 text-white p-2 px-3 rounded-full font-semibold">
-            <span className="pb-1">
+          <div className="flex gap-1 items-center border border-slate-400/20 text-white bg-slate-950/20 p-2 px-3 rounded-full font-semibold bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-40">
+            <span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -112,7 +112,7 @@ function TimeAndDate() {
                 />
               </svg>
             </span>
-            <span className="text-sky-600">{dateTime.month.toUpperCase()}</span>
+            <span className="text-sky-500">{dateTime.month.toUpperCase()}</span>
             <span className="font-normal">{dateTime.year}</span>
           </div>
 
