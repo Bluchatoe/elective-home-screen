@@ -90,11 +90,11 @@ function TabFilters({ handleScroll }) {
 
   useEffect(() => {
     const handleKeyAandD = (event) => {
-      if (event.key === "d") {
+      if (event.key === "d" || event.key === "ArrowRight") {
         // Move to the right tab
 
         handleScroll("right");
-      } else if (event.key === "a") {
+      } else if (event.key === "a" || event.key === "ArrowLeft") {
         handleScroll("left");
       }
     };
