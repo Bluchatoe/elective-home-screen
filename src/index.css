@@ -33,3 +33,34 @@ body {
   transform: scale(1.02); /* Slightly expand active item */
   outline: 2px solid skyblue; /* Outline effect */
 }
+
+@keyframes breathing {
+  0%,
+  100% {
+    outline-width: 2px;
+    outline-color: rgba(56, 189, 248, 0.6); /* Lighter sky blue */
+  }
+  50% {
+    outline-width: 7px;
+    outline-color: rgba(56, 189, 248, 1); /* Brighter sky blue */
+  }
+}
+
+.breathing-animation {
+  animation: breathing 1.7s ease-in-out infinite;
+}
+
+.keyboard-caps-btn {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  box-shadow: 0 2px 0 0 rgb(203 213 225 / 0.9);
+}
+
+.keyboard-caps-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 0; /* Remove the box shadow */
+}
+
+.keyboard-caps-btn-active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 0; /* Remove the box shadow */
+}

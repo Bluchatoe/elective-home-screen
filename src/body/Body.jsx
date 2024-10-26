@@ -1,46 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { KeyboardCaps } from "../bottom-part/BottomPart";
+import useCarousel from "../CarouselContext";
 
 function Body() {
-  const scrollRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0); // Track the active item index
-
-  const items = [
-    { app: "app1" },
-    { app: "app2" },
-    { app: "app3" },
-    { app: "app4" },
-    { app: "app5" },
-    { app: "app6" },
-  ];
-
-  // Scroll to specific item
-  const scrollToItem = (index) => {
-    const scrollContainer = scrollRef.current;
-    const itemWidth =
-      scrollContainer.querySelector(".carousel-item").offsetWidth;
-
-    scrollContainer.scrollTo({
-      left: itemWidth * index, // Scroll to the exact position of the item
-      behavior: "smooth",
-    });
-    setActiveIndex(index); // Update active index
-  };
-
-  // Handle clicking the left/right buttons
-  const scroll = (direction) => {
-    let newIndex = activeIndex;
-
-    if (direction === "left") {
-      console.log("leftCondition: ", activeIndex === 0);
-      newIndex = activeIndex === 0 ? items.length - 1 : activeIndex - 1;
-    } else {
-      console.log("RightCondition: ", activeIndex === items.length - 1);
-      newIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
-    }
-
-    scrollToItem(newIndex);
-  };
+  const { scrollRef, activeIndex, items, scroll, scrollToItem } = useCarousel();
 
   return (
     <main className="grow flex flex-col pt-12 ">
@@ -64,8 +27,13 @@ function TabFilters({ handleScroll }) {
   const tabs = useMemo(() => ["All Projects", "Recents", "Favorites"], []);
 
   useEffect(() => {
+    const qKey = document.getElementById("key-q");
+    const eKey = document.getElementById("key-e");
+
     const handleKeyDown = (event) => {
       if (event.key === "q") {
+        qKey.classList.add("keyboard-caps-btn-active");
+
         // Move to the left tab
         setActiveTab((prev) => {
           const currentIndex = tabs.indexOf(prev);
@@ -73,6 +41,8 @@ function TabFilters({ handleScroll }) {
           return tabs[newIndex];
         });
       } else if (event.key === "e") {
+        eKey.classList.add("keyboard-caps-btn-active");
+
         // Move to the right tab
         setActiveTab((prev) => {
           const currentIndex = tabs.indexOf(prev);
@@ -82,33 +52,71 @@ function TabFilters({ handleScroll }) {
       }
     };
 
+    const handleKeyUp = (event) => {
+      if (event.key === "q") {
+        qKey.classList.remove("keyboard-caps-btn-active");
+      } else if (event.key === "e") {
+        eKey.classList.remove("keyboard-caps-btn-active");
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.addEventListener("keyup", handleKeyUp);
     };
   }, [tabs]);
 
   useEffect(() => {
+    const aKey = document.getElementById("key-a");
+    const dKey = document.getElementById("key-d");
+
     const handleKeyAandD = (event) => {
       if (event.key === "d" || event.key === "ArrowRight") {
-        // Move to the right tab
+        dKey.classList.add("keyboard-caps-btn-active");
 
+        // Move to the right tab
         handleScroll("right");
       } else if (event.key === "a" || event.key === "ArrowLeft") {
+        aKey.classList.add("keyboard-caps-btn-active");
+
         handleScroll("left");
       }
     };
 
+    const handleKeyUp = (event) => {
+      if (event.key === "d" || event.key === "ArrowRight") {
+        dKey.classList.remove("keyboard-caps-btn-active");
+      } else if (event.key === "a" || event.key === "ArrowLeft") {
+        aKey.classList.remove("keyboard-caps-btn-active");
+      }
+    };
+
     window.addEventListener("keydown", handleKeyAandD);
+    window.addEventListener("keyup", handleKeyUp);
+
     return () => {
       window.removeEventListener("keydown", handleKeyAandD);
+      window.addEventListener("keyup", handleKeyUp);
     };
   }, [handleScroll]);
 
   return (
     <div className="p-3 flex items-center">
       <div className="flex items-center gap-2">
-        <KeyboardCaps letter="Q" />
+        <KeyboardCaps
+          letter="Q"
+          keyId="key-q"
+          onClick={() => {
+            setActiveTab((prev) => {
+              const currentIndex = tabs.indexOf(prev);
+              const newIndex = (currentIndex - 1 + tabs.length) % tabs.length; // Wrap around
+              return tabs[newIndex];
+            });
+          }}
+        />
 
         <div className="flex items-center gap-2 mx-4 bg-slate-900 p-1 rounded-lg border border-slate-400/20 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-40">
           {tabs.map((tab) => (
@@ -126,7 +134,17 @@ function TabFilters({ handleScroll }) {
           ))}
         </div>
 
-        <KeyboardCaps letter="E" />
+        <KeyboardCaps
+          letter="E"
+          keyId="key-e"
+          onClick={() => {
+            setActiveTab((prev) => {
+              const currentIndex = tabs.indexOf(prev);
+              const newIndex = (currentIndex + 1) % tabs.length; // Wrap around
+              return tabs[newIndex];
+            });
+          }}
+        />
       </div>
 
       <div className="ml-auto flex gap-3">
@@ -207,7 +225,7 @@ function AppContainer({ index, activeIndex, children, onClick }) {
     <div
       className={`carousel-item h-full flex flex-col aspect-square justify-center items-center bg-slate-950/40 border border-slate-400/40 backdrop-filter backdrop-blur-xl rounded-lg hover:cursor-pointer hover:outline outline-1 ${
         index === activeIndex
-          ? "active-item outline outline-2 outline-offset-2 outline-sky-400"
+          ? "breathing-animation outline outline-offset-2 outline-sky-400"
           : ""
       }`}
       onClick={onClick}

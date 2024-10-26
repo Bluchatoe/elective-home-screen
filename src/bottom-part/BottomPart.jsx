@@ -1,3 +1,5 @@
+import useCarousel from "../CarouselContext";
+
 function BottomPart() {
   return (
     <div className="w-full text-center flex justify-between items-center relative p-5">
@@ -10,31 +12,46 @@ function BottomPart() {
 export default BottomPart;
 
 function Controls() {
+  const { scroll } = useCarousel();
+
   return (
     <div className="z-20 flex items-center gap-8">
       <div className="flex items-center gap-4">
-        <KeyboardCaps letter="A" />
+        <KeyboardCaps
+          letter="A"
+          keyId="key-a"
+          onClick={() => {
+            scroll("left");
+          }}
+        />
         <p>Previous</p>
       </div>
 
       <div className="flex items-center gap-4">
-        <KeyboardCaps letter="D" />
+        <KeyboardCaps
+          letter="D"
+          keyId="key-d"
+          onClick={() => {
+            scroll("right");
+          }}
+        />
         <p>Next</p>
       </div>
 
       <div className="flex items-center gap-4">
-        <EnterkeyIcon letter="D" />
+        <EnterkeyIcon />
         <p>Lauch App</p>
       </div>
     </div>
   );
 }
 
-export function KeyboardCaps({ letter }) {
+export function KeyboardCaps({ letter, onClick, keyId }) {
   return (
     <div
-      className="border border-slate-300/60 rounded-lg px-3 py-2 text-sm bg-slate-900/50 select-none aspect-square bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20"
-      style={{ boxShadow: "0 2px 0 0 rgb(203 213 225 / 0.9)" }}
+      id={keyId}
+      className="border border-slate-300/60 rounded-lg px-3 py-2 text-sm bg-slate-900/50 select-none aspect-square bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20 hover:cursor-pointer hover:bg-slate-900/80 keyboard-caps-btn"
+      onClick={onClick}
     >
       {letter}
     </div>
@@ -43,10 +60,7 @@ export function KeyboardCaps({ letter }) {
 
 function EnterkeyIcon() {
   return (
-    <div
-      className="border border-slate-300/60 rounded-lg px-4 py-2 text-sm bg-slate-900/50 select-none flex items-center gap-1 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20"
-      style={{ boxShadow: "0 2px 0 0 rgb(203 213 225 / 0.9)" }}
-    >
+    <div className="border border-slate-300/60 rounded-lg px-4 py-2 text-sm bg-slate-900/50 select-none flex items-center gap-1 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-20 hover:cursor-pointer hover:bg-slate-900/80 keyboard-caps-btn">
       Enter
       <span>
         <svg
