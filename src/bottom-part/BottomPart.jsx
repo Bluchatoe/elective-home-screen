@@ -1,4 +1,4 @@
-import useCarousel from "../CarouselContext";
+import useCarousel from "../useCarousel";
 
 function BottomPart() {
   return (

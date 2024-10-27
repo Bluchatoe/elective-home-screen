@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { KeyboardCaps } from "../bottom-part/BottomPart";
-import useCarousel from "../CarouselContext";
+import useCarousel from "../useCarousel";
 
 function Body() {
   const { scrollRef, activeIndex, items, scroll, scrollToItem } = useCarousel();
@@ -208,9 +208,13 @@ function AppsCarousel({ scrollRef, activeIndex, items, scrollToItem }) {
               scrollToItem(index);
             }}
           >
-            <p>index: {index}</p>
-            <p>{item.app}</p>
-            <p>act: {activeIndex}</p>
+            {item !== null && (
+              <>
+                <p>index: {index}</p>
+                <p>{item.appName}</p>
+                <p>act: {activeIndex}</p>
+              </>
+            )}
           </AppContainer>
         ))}
 
@@ -236,34 +240,36 @@ function AppContainer({ index, activeIndex, children, onClick }) {
 }
 
 function AppInfo() {
+  const { items, activeIndex } = useCarousel();
+
+  const activeItem = items[activeIndex];
+
+  if (!activeItem) return null;
+
   return (
     <div className="pl-6 p-1">
       <div className="p-4 flex flex-col gap-2 max-w-xl">
         <div className="flex justify-between mb-2">
-          <h2 className="text-3xl font-semibold">Project Name</h2>
+          <h2 className="text-3xl font-semibold">{activeItem.appName}</h2>
           <button className="py-1 px-3 text-sm text-slate-200 font-light border rounded-md">
             Favorite
           </button>
         </div>
 
         <h6 className="text-sm font-light text-slate-200">
-          Vestibulum consectetur consectetur nulla sit amet condimentum. Proin
-          sollicitudin dui eget odio placerat, eu lacinia leo malesuada. Cras in
-          dolor ut magna aliquam suscipit. Aliquam non ligula mattis,
+          {activeItem.description}
         </h6>
 
-        <div className="mt-4 flex justify-between items-end">
+        <div className="mt-4 flex flex-col gap-5">
           <div>
-            <h4>Technology</h4>
+            <h4 className="mb-1">Technology</h4>
 
-            <div className="flex flex-wrap gap-5 text-slate-300 font-light">
-              <span>HTML</span>
-              <span>CSS</span>
-              <span>JavaScript</span>
+            <div className="flex flex-wrap gap-4 text-slate-300 font-light">
+              {activeItem.technologies.map((tech) => tech)}
             </div>
           </div>
 
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col ">
             <span className="text-sm font-light text-slate-300">
               Date Created
             </span>

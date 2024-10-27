@@ -1,21 +1,15 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useRef, useState } from "react";
+import AppList from "./AppsList";
 
 // Create the context
-const CarouselContext = createContext();
+export const CarouselContext = createContext();
 
 // Provider component
 export const CarouselProvider = ({ children }) => {
   const scrollRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0); // Track the active item index
 
-  const items = [
-    { app: "app1" },
-    { app: "app2" },
-    { app: "app3" },
-    { app: "app4" },
-    { app: "app5" },
-    { app: "app6" },
-  ];
+  const items = AppList;
 
   // Scroll to specific item
   const scrollToItem = (index) => {
@@ -51,10 +45,3 @@ export const CarouselProvider = ({ children }) => {
     </CarouselContext.Provider>
   );
 };
-
-// Custom hook to use the CarouselContext
-const useCarousel = () => {
-  return useContext(CarouselContext);
-};
-
-export default useCarousel;
