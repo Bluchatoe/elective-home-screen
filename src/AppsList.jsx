@@ -1,3 +1,11 @@
+import {
+  GembotBgImg,
+  GembotImg,
+  ImageClassifierBgImg,
+  ImageClassifierImg,
+  PenaltyMotoBgImg,
+  PenaltyMotoImg,
+} from "./AppImages";
 import GeminiIcon from "./assets/gem_white.png";
 
 const EmptyApp = null;
@@ -20,10 +28,10 @@ const ImageClassifier = {
       }
     />,
   ],
-  dataCreated: "",
+  dateCreated: "September 2024",
   isFavorite: false,
-  appImage: null,
-  appBgImage: null,
+  appImage: <ImageClassifierImg />,
+  appBgImage: <ImageClassifierBgImg />,
 };
 
 const GemBots = {
@@ -41,10 +49,10 @@ const GemBots = {
       icon={<img src={GeminiIcon} width={25} />}
     />,
   ],
-  dataCreated: "",
+  dateCreated: "October 2024",
   isFavorite: false,
-  appImage: null,
-  appBgImage: null,
+  appImage: <GembotImg />,
+  appBgImage: <GembotBgImg />,
 };
 
 const PenaltyMotoPH = {
@@ -64,10 +72,10 @@ const PenaltyMotoPH = {
       icon={<TailwindIcon />}
     />,
   ],
-  dataCreated: "",
+  dateCreated: "October 2024",
   isFavorite: false,
-  appImage: null,
-  appBgImage: null,
+  appImage: <PenaltyMotoImg />,
+  appBgImage: <PenaltyMotoBgImg />,
 };
 
 const AppList = [

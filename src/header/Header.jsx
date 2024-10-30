@@ -24,7 +24,7 @@ function Logo() {
         <h3 className="font-medium text-lg mb-[-4px]">
           CS Elective <span className="text-sky-500 ">AI</span>
         </h3>
-        <p className="text-sm text-slate-400 flex items-center gap-1">
+        <p className="text-sm text-slate-300 flex items-center gap-1">
           CSELC03C{" "}
           <span>
             <svg
@@ -117,7 +117,7 @@ function TimeAndDate() {
           </div>
 
           <div className="flex flex-col items-center ">
-            <span className="text-xs mb-[-4px] text-slate-400">
+            <span className="text-xs mb-[-4px] text-slate-300">
               {dateTime.weekday}
             </span>
             <span className="font-bold text-lg">{dateTime.day}</span>
@@ -167,7 +167,7 @@ function Profile() {
             CS: 401
           </span>
         </h3>
-        <p className="text-xs text-slate-400">@Blooblulub#02</p>
+        <p className="text-xs text-slate-300">@Blooblulub#02</p>
       </div>
     </div>
   );

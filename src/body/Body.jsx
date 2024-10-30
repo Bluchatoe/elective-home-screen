@@ -147,7 +147,7 @@ function TabFilters({ handleScroll }) {
         />
       </div>
 
-      <div className="ml-auto flex gap-3">
+      <div className="ml-auto flex gap-3 z-20">
         <button
           className=" aspect-square bg-slate-800/60 border-slate-200/30 border p-3 rounded-full hover:bg-slate-900"
           onClick={() => handleScroll("left")}
@@ -208,13 +208,7 @@ function AppsCarousel({ scrollRef, activeIndex, items, scrollToItem }) {
               scrollToItem(index);
             }}
           >
-            {item !== null && (
-              <>
-                <p>index: {index}</p>
-                <p>{item.appName}</p>
-                <p>act: {activeIndex}</p>
-              </>
-            )}
+            {item !== null && <>{item.appImage}</>}
           </AppContainer>
         ))}
 
@@ -227,7 +221,7 @@ function AppsCarousel({ scrollRef, activeIndex, items, scrollToItem }) {
 function AppContainer({ index, activeIndex, children, onClick }) {
   return (
     <div
-      className={`carousel-item h-full flex flex-col aspect-square justify-center items-center bg-slate-950/40 border border-slate-400/40 backdrop-filter backdrop-blur-xl rounded-lg hover:cursor-pointer hover:outline outline-1 ${
+      className={`carousel-item h-full flex flex-col aspect-square justify-center items-center bg-slate-950/40 border border-slate-400/40 backdrop-filter backdrop-blur-xl rounded-lg hover:cursor-pointer hover:outline outline-1 overflow-clip ${
         index === activeIndex
           ? "breathing-animation outline outline-offset-2 outline-sky-400"
           : ""
@@ -247,7 +241,7 @@ function AppInfo() {
   if (!activeItem) return null;
 
   return (
-    <div className="pl-6 p-1">
+    <div className="pl-6 p-1 z-20">
       <div className="p-4 flex flex-col gap-2 max-w-xl">
         <div className="flex justify-between mb-2">
           <h2 className="text-3xl font-semibold">{activeItem.appName}</h2>
@@ -273,7 +267,7 @@ function AppInfo() {
             <span className="text-sm font-light text-slate-300">
               Date Created
             </span>
-            <span>Oct 2, 2001</span>
+            <span>{activeItem.dateCreated}</span>
           </div>
         </div>
       </div>
