@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { KeyboardCaps } from "../bottom-part/BottomPart";
 import useCarousel from "../useCarousel";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Body() {
   const { scrollRef, activeIndex, items, scroll, scrollToItem } = useCarousel();
@@ -241,36 +242,45 @@ function AppInfo() {
   if (!activeItem) return null;
 
   return (
-    <div className="pl-6 p-1 z-20">
-      <div className="p-4 flex flex-col gap-2 max-w-xl">
-        <div className="flex justify-between mb-2">
-          <h2 className="text-3xl font-semibold">{activeItem.appName}</h2>
-          <button className="py-1 px-3 text-sm text-slate-200 font-light border rounded-md">
-            Favorite
-          </button>
-        </div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={activeItem.appName}
+        className="pl-6 p-1 z-20"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2, ease: "easeIn" }}
+      >
+        <div className="p-4 flex flex-col gap-2 max-w-xl">
+          <div className="flex justify-between mb-2">
+            <h2 className="text-3xl font-semibold">{activeItem.appName}</h2>
+            <button className="py-1 px-3 text-sm text-slate-200 font-light border rounded-md">
+              Favorite
+            </button>
+          </div>
 
-        <h6 className="text-sm font-light text-slate-200">
-          {activeItem.description}
-        </h6>
+          <h6 className="text-sm font-light text-slate-200">
+            {activeItem.description}
+          </h6>
 
-        <div className="mt-4 flex flex-col gap-5">
-          <div>
-            <h4 className="mb-1">Technology</h4>
+          <div className="mt-4 flex flex-col gap-5">
+            <div>
+              <h4 className="mb-1">Technology</h4>
 
-            <div className="flex flex-wrap gap-4 text-slate-300 font-light">
-              {activeItem.technologies.map((tech) => tech)}
+              <div className="flex flex-wrap gap-4 text-slate-300 font-light">
+                {activeItem.technologies.map((tech) => tech)}
+              </div>
+            </div>
+
+            <div className="flex flex-col ">
+              <span className="text-sm font-light text-slate-300">
+                Date Created
+              </span>
+              <span>{activeItem.dateCreated}</span>
             </div>
           </div>
-
-          <div className="flex flex-col ">
-            <span className="text-sm font-light text-slate-300">
-              Date Created
-            </span>
-            <span>{activeItem.dateCreated}</span>
-          </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

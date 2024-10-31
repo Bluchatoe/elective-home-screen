@@ -24,5 +24,11 @@ export function PenaltyMotoImg() {
   return <img src={PenaltyMotoSrc} alt="Gembot Image" />;
 }
 export function PenaltyMotoBgImg() {
-  return <img src={PenaltyMotoBgSrc} alt="Gembot Image" />;
+  return (
+    <img
+      src={PenaltyMotoBgSrc}
+      alt="Gembot Image"
+      className="object-cover w-full h-full absolute inset-0"
+    />
+  );
 }
