@@ -1,4 +1,5 @@
 import "./App.css";
+import AppWindow from "./AppWindow";
 import Background from "./Background";
 import Foreground from "./Foreground";
 
@@ -7,6 +8,7 @@ function App() {
     <BodyWrapper>
       <Background />
       <Foreground />
+      <AppWindow />
     </BodyWrapper>
   );
 }
