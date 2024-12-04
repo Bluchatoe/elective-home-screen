@@ -1,4 +1,44 @@
+import { useEffect, useRef, useState } from "react";
+import * as tmImage from "@teachablemachine/image";
+
 const ImageClassifier = () => {
+  const webcamRef = useRef(null);
+  const [model, setModel] = useState(null);
+  const [maxPredictions, setMaxPredictions] = useState(0);
+  const [predictions, setPredictions] = useState([]);
+  const URL = "https://teachablemachine.withgoogle.com/models/42ES1U83Q/";
+
+  const init = async () => {
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
+
+    // Load the model and metadata
+    const loadedModel = await tmImage.load(modelURL, metadataURL);
+    setModel(loadedModel);
+    setMaxPredictions(loadedModel.getTotalClasses());
+
+    // Setup the webcam
+    const flip = true; // Flip the webcam
+    const webcam = new tmImage.Webcam(400, 400, flip);
+    await webcam.setup(); // Request access to webcam
+    await webcam.play();
+    webcamRef.current = webcam;
+
+    // Start the prediction loop
+    window.requestAnimationFrame(() => loop(webcam, loadedModel));
+  };
+
+  const loop = async (webcam, model) => {
+    webcam.update(); // Update webcam frame
+    await predict(webcam, model);
+    window.requestAnimationFrame(() => loop(webcam, model));
+  };
+
+  const predict = async (webcam, model) => {
+    const prediction = await model.predict(webcam.canvas);
+    setPredictions(prediction);
+  };
+
   return (
     <main
       className="w-full h-full flex justify-center items-center"
@@ -69,6 +109,11 @@ const ImageClassifier = () => {
             }}
           >
             <div id="webcam-container">
+              {webcamRef.current && (
+                <canvas
+                  ref={(el) => el && el.appendChild(webcamRef.current.canvas)}
+                />
+              )}
               <div id="cam-placeholder">
                 <div className="flex items-center justify-center">
                   <svg
@@ -106,6 +151,13 @@ const ImageClassifier = () => {
               </div>
 
               <div id="classes" className="flex flex-col gap-4 pb-2">
+                {predictions.map((pred, index) => (
+                  <ImageClass
+                    key={index}
+                    classModelName={pred.className}
+                    percentage={pred.probability * 100}
+                  />
+                ))}
                 <ImageClass />
                 <ImageClass />
                 <ImageClass />
@@ -115,7 +167,9 @@ const ImageClassifier = () => {
             <button
               className="start w-full py-3 bg-sky-500 hover:bg-sky-600 text-white mt-2 rounded-md"
               type="button"
-              onClick={() => {}}
+              onClick={() => {
+                init();
+              }}
             >
               Start Classifying
             </button>
