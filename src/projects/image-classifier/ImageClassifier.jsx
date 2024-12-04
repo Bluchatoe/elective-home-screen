@@ -3,12 +3,24 @@ import * as tmImage from "@teachablemachine/image";
 
 const ImageClassifier = () => {
   const webcamRef = useRef(null);
+  const webcamWrapper = useRef(null);
   const [model, setModel] = useState(null);
   const [maxPredictions, setMaxPredictions] = useState(0);
-  const [predictions, setPredictions] = useState([]);
+  const [predictions, setPredictions] = useState([
+    { className: "Milcu Sports Deodorant", probability: 0 },
+    { className: "Locally Juice Drink", probability: 0 },
+    { className: "Smart C Lemon", probability: 0 },
+    { className: "Super Smash Bros Ultimate", probability: 0 },
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCamOn, setIsCamOn] = useState(false);
+  const animationIdRef = useRef(null); // Store the animation frame ID
+
   const URL = "https://teachablemachine.withgoogle.com/models/42ES1U83Q/";
 
   const init = async () => {
+    setIsLoading(true);
+
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
 
@@ -18,26 +30,65 @@ const ImageClassifier = () => {
     setMaxPredictions(loadedModel.getTotalClasses());
 
     // Setup the webcam
-    const flip = true; // Flip the webcam
-    const webcam = new tmImage.Webcam(400, 400, flip);
-    await webcam.setup(); // Request access to webcam
-    await webcam.play();
-    webcamRef.current = webcam;
+    try {
+      const flip = true; // Flip the webcam
+      const webcam = new tmImage.Webcam(700, 500, flip);
+      await webcam.setup(); // Request access to webcam
+      await webcam.play();
+      webcamRef.current = webcam;
+
+      setIsCamOn(true);
+
+      // Start the prediction loop and store the animation frame ID
+      animationIdRef.current = window.requestAnimationFrame(() =>
+        loop(webcam, loadedModel)
+      );
+    } catch (e) {
+      console.log("Error", e);
+      setIsLoading(false);
+    }
+
+    setIsLoading(false);
 
     // Start the prediction loop
-    window.requestAnimationFrame(() => loop(webcam, loadedModel));
   };
 
   const loop = async (webcam, model) => {
     webcam.update(); // Update webcam frame
     await predict(webcam, model);
-    window.requestAnimationFrame(() => loop(webcam, model));
+
+    // Schedule the next frame and store the ID
+    animationIdRef.current = window.requestAnimationFrame(() =>
+      loop(webcam, model)
+    );
   };
 
   const predict = async (webcam, model) => {
     const prediction = await model.predict(webcam.canvas);
     setPredictions(prediction);
   };
+
+  const stopLoop = () => {
+    window.cancelAnimationFrame(animationIdRef.current); // Stop the animation loop
+    animationIdRef.current = null;
+    console.log("Loop stopped");
+
+    webcamRef.current.stop();
+    webcamRef.current = null;
+  };
+
+  const closeCam = () => {
+    setModel(null);
+    stopLoop();
+
+    setIsCamOn(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      window.cancelAnimationFrame(animationIdRef.current);
+    };
+  }, []);
 
   return (
     <main
@@ -109,33 +160,19 @@ const ImageClassifier = () => {
             }}
           >
             <div id="webcam-container">
-              {webcamRef.current && (
-                <canvas
-                  ref={(el) => el && el.appendChild(webcamRef.current.canvas)}
-                />
-              )}
               <div id="cam-placeholder">
-                <div className="flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="size-40"
-                  >
-                    <path d="M12 9a3.75 3.75 0 1 0 0 7.5A3.75 3.75 0 0 0 12 9Z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M9.344 3.071a49.52 49.52 0 0 1 5.312 0c.967.052 1.83.585 2.332 1.39l.821 1.317c.24.383.645.643 1.11.71.386.054.77.113 1.152.177 1.432.239 2.429 1.493 2.429 2.909V18a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3V9.574c0-1.416.997-2.67 2.429-2.909.382-.064.766-.123 1.151-.178a1.56 1.56 0 0 0 1.11-.71l.822-1.315a2.942 2.942 0 0 1 2.332-1.39ZM6.75 12.75a5.25 5.25 0 1 1 10.5 0 5.25 5.25 0 0 1-10.5 0Zm12-1.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-                      clipRule="evenodd"
+                <div className="w-full h-full" ref={webcamWrapper}>
+                  {webcamRef.current && (
+                    <div
+                      className="w-full h-full bg-white"
+                      ref={(el) =>
+                        el && el.appendChild(webcamRef.current.canvas)
+                      }
                     />
-                  </svg>
+                  )}
+
+                  {!isCamOn && <CameraPlaceHolder />}
                 </div>
-                <p className="text-center text-slate-200">
-                  Camera will appear here. <br />
-                  Click{" "}
-                  <b className="text-white">&#34;Start Classifying&#34;</b> to
-                  open camera.
-                </p>
               </div>
             </div>
           </div>
@@ -151,28 +188,55 @@ const ImageClassifier = () => {
               </div>
 
               <div id="classes" className="flex flex-col gap-4 pb-2">
-                {predictions.map((pred, index) => (
-                  <ImageClass
-                    key={index}
-                    classModelName={pred.className}
-                    percentage={pred.probability * 100}
-                  />
-                ))}
-                <ImageClass />
-                <ImageClass />
-                <ImageClass />
-                <ImageClass />
+                {predictions.length !== 0 && (
+                  <>
+                    <ImageClass
+                      classModelName={predictions[0].className}
+                      percentage={
+                        !isCamOn ? 0 : predictions[0].probability * 100
+                      }
+                    />
+                    <ImageClass
+                      classModelName={predictions[1].className}
+                      percentage={
+                        !isCamOn ? 0 : predictions[1].probability * 100
+                      }
+                    />
+                    <ImageClass
+                      classModelName={predictions[2].className}
+                      percentage={
+                        !isCamOn ? 0 : predictions[2].probability * 100
+                      }
+                    />
+                    <ImageClass
+                      classModelName={predictions[3].className}
+                      percentage={
+                        !isCamOn ? 0 : predictions[3].probability * 100
+                      }
+                    />
+                  </>
+                )}
               </div>
             </div>
             <button
-              className="start w-full py-3 bg-sky-500 hover:bg-sky-600 text-white mt-2 rounded-md"
+              className="start w-full py-3 bg-sky-500 hover:bg-sky-600 text-white mt-2 rounded-md disabled:cursor-not-allowed disabled:opacity-50"
               type="button"
               onClick={() => {
                 init();
               }}
+              disabled={webcamRef.current}
             >
-              Start Classifying
+              {isLoading ? "Loading Camera" : "Start Classifying"}
             </button>
+
+            {webcamRef.current && (
+              <button
+                className="mt-2 w-full py-3 border border-slate-500 rounded-md"
+                onClick={closeCam}
+              >
+                Close Camera
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -190,9 +254,39 @@ const ImageClass = ({ classModelName = "Class Name", percentage = 0 }) => {
         <h3 className="font-bold">{percentage.toFixed(2)}%</h3>
       </div>
 
-      <div className="progress-container w-full h-3 bg-slate-300 rounded-full border border-slate-400">
-        <div className="progress-bar"></div>
+      <div className="progress-container w-full h-3 bg-slate-300 rounded-full border border-slate-400 flex overflow-clip">
+        <div
+          className="bg-sky-500"
+          style={{ width: `${Math.round(percentage)}%` }}
+        ></div>
       </div>
     </div>
+  );
+};
+
+const CameraPlaceHolder = () => {
+  return (
+    <>
+      <div className="flex items-center justify-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-40"
+        >
+          <path d="M12 9a3.75 3.75 0 1 0 0 7.5A3.75 3.75 0 0 0 12 9Z" />
+          <path
+            fillRule="evenodd"
+            d="M9.344 3.071a49.52 49.52 0 0 1 5.312 0c.967.052 1.83.585 2.332 1.39l.821 1.317c.24.383.645.643 1.11.71.386.054.77.113 1.152.177 1.432.239 2.429 1.493 2.429 2.909V18a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3V9.574c0-1.416.997-2.67 2.429-2.909.382-.064.766-.123 1.151-.178a1.56 1.56 0 0 0 1.11-.71l.822-1.315a2.942 2.942 0 0 1 2.332-1.39ZM6.75 12.75a5.25 5.25 0 1 1 10.5 0 5.25 5.25 0 0 1-10.5 0Zm12-1.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+      <p className="text-center text-slate-200">
+        Camera will appear here. <br />
+        Click <b className="text-white">&#34;Start Classifying&#34;</b> to open
+        camera.
+      </p>
+    </>
   );
 };
