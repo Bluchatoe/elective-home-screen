@@ -1,4 +1,6 @@
 import { useLauncherContext } from "./hooks/context";
+import GemBots from "./projects/chatbot/GemBots";
+import ExpertSystem from "./projects/expert-system/ExpertSystem";
 import ImageClassifier from "./projects/image-classifier/ImageClassifier";
 
 const AppWindow = () => {
@@ -15,7 +17,7 @@ const AppWindow = () => {
     <div className="fixed inset-0 bg-black/70 w-full h-full z-50 flex justify-center items-center ">
       <div className="w-[90%] h-[90%] bg-white text-black rounded-lg flex flex-col overflow-clip border border-slate-600">
         {/* Menu Bar */}
-        <div className="w-full bg-slate-800 h-10 flex items-center relative">
+        <div className="w-full bg-slate-800 min-h-10 flex items-center relative">
           <div className="px-3 flex items-center gap-2">
             <button
               className="rounded-full bg-sky-400 flex items-center justify-center w-4 h-4 border border-slate-100/50"
@@ -51,10 +53,8 @@ const AppWindow = () => {
           {runningAppDetails?.appName === "Image Classifier" && (
             <ImageClassifier />
           )}
-          {runningAppDetails?.appName === "GemBots" && <p>GEMBOTS</p>}
-          {runningAppDetails?.appName === "PenaltyMoto PH" && (
-            <p>penalty moto</p>
-          )}
+          {runningAppDetails?.appName === "GemBots" && <GemBots />}
+          {runningAppDetails?.appName === "PenaltyMoto PH" && <ExpertSystem />}
         </div>
       </div>
     </div>

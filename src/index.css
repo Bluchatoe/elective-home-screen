@@ -64,3 +64,114 @@ body {
   transform: translateY(2px);
   box-shadow: 0 0 0 0; /* Remove the box shadow */
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fde68a;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #b4530998;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+::-webkit-scrollbar-button {
+  width: 20px; /* Adjust width */
+  height: 20px; /* Adjust height */
+}
+
+/* Add up icon */
+::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 14l5-5 5 5H7z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Add down icon */
+::-webkit-scrollbar-button:vertical:increment {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5H7z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+::selection {
+  color: rgb(255, 255, 255);
+  background: #b86303;
+}
+
+.section-div p {
+  margin-bottom: 16px;
+}
+
+.section-div ol {
+  list-style-type: lower-alpha;
+  padding-left: 30px;
+}
+
+.section-div li {
+  margin-bottom: 16px;
+  padding-left: 8px;
+}
+
+.grid-areas-parent {
+  display: grid;
+  grid-template-areas:
+    "area1 area1 area4 area4"
+    "area1 area1 area2 area3";
+  grid-template-rows: repeat(2, 200px);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.grid-areas-parent > div {
+  outline: 1px solid #fde68a46;
+  position: relative;
+  cursor: pointer;
+}
+.grid-areas-parent > div:hover {
+  outline: 2px solid #fde68a;
+}
+
+.grid-areas-parent h4 {
+  font-size: 0.8rem;
+  color: #fde68a;
+}
+
+.grid-areas-parent h2 {
+  font-size: 1.5rem;
+}
+
+.area-1 {
+  grid-area: area1;
+  background: url("/src/assets/numberPlates.jpg");
+  background-size: cover;
+  background-position: bottom;
+}
+.area-2 {
+  grid-area: area2;
+  background: url("/src/assets/registration.jpg");
+  background-size: cover;
+  background-position: bottom;
+}
+.area-3 {
+  grid-area: area3;
+  background: url("/src/assets/enforcer.jpg");
+  background-size: cover;
+  background-position: center;
+}
+.area-4 {
+  grid-area: area4;
+  background: url("/src/assets/crime.jpg");
+  background-size: cover;
+  background-position: top;
+}
