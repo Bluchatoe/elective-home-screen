@@ -2,13 +2,16 @@ import "./App.css";
 import AppWindow from "./AppWindow";
 import Background from "./Background";
 import Foreground from "./Foreground";
+import LauncherContextProvider from "./LauncherContext";
 
 function App() {
   return (
     <BodyWrapper>
-      <Background />
-      <Foreground />
-      <AppWindow />
+      <LauncherContextProvider>
+        <Background />
+        <Foreground />
+        <AppWindow />
+      </LauncherContextProvider>
     </BodyWrapper>
   );
 }

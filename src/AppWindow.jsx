@@ -1,13 +1,29 @@
+import { useLauncherContext } from "./hooks/context";
 import ImageClassifier from "./projects/image-classifier/ImageClassifier";
 
 const AppWindow = () => {
+  const {
+    isLauncherWindowOpen,
+    setIsLauncherWindowOpen,
+    runningAppDetails,
+    setRunningAppDetails,
+  } = useLauncherContext();
+
+  if (!isLauncherWindowOpen) return null;
+
   return (
     <div className="fixed inset-0 bg-black/70 w-full h-full z-50 flex justify-center items-center ">
       <div className="w-[90%] h-[90%] bg-white text-black rounded-lg flex flex-col overflow-clip border border-slate-600">
         {/* Menu Bar */}
         <div className="w-full bg-slate-800 h-10 flex items-center relative">
           <div className="px-3 flex items-center gap-2">
-            <button className="rounded-full bg-sky-400 flex items-center justify-center w-4 h-4 border border-slate-100/50">
+            <button
+              className="rounded-full bg-sky-400 flex items-center justify-center w-4 h-4 border border-slate-100/50"
+              onClick={() => {
+                setIsLauncherWindowOpen(false);
+                setRunningAppDetails({});
+              }}
+            >
               <CloseIcon
                 className={`size-3  text-sky-400 hover:text-slate-800`}
               />
@@ -15,19 +31,30 @@ const AppWindow = () => {
             <button className="rounded-full bg-sky-300 flex items-center justify-center w-4 h-4 text-sky-300 hover:text-slate-800 border-slate-100/50">
               <SquareIcon className={`size-3`} />
             </button>
-            <button className="rounded-full bg-sky-200 flex items-center justify-center w-4 h-4 text-sky-200 hover:text-slate-800 border-slate-100/50">
+            <button
+              className="rounded-full bg-sky-200 flex items-center justify-center w-4 h-4 text-sky-200 hover:text-slate-800 border-slate-100/50"
+              onClick={() => {
+                setIsLauncherWindowOpen(false);
+              }}
+            >
               <MinusIcon className={`size-3`} />
             </button>
           </div>
 
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-slate-300 font-light">
-            App name.exe
+            {runningAppDetails?.appName}.exe
           </div>
         </div>
 
         {/* App Body */}
         <div className="w-full h-full max-h-full overflow-clip bg-slate-200">
-          <ImageClassifier />
+          {runningAppDetails?.appName === "Image Classifier" && (
+            <ImageClassifier />
+          )}
+          {runningAppDetails?.appName === "GemBots" && <p>GEMBOTS</p>}
+          {runningAppDetails?.appName === "PenaltyMoto PH" && (
+            <p>penalty moto</p>
+          )}
         </div>
       </div>
     </div>

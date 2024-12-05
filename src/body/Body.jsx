@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { KeyboardCaps } from "../bottom-part/BottomPart";
 import useCarousel from "../useCarousel";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLauncherContext } from "../hooks/context";
 
 function Body() {
   const { scrollRef, activeIndex, items, scroll, scrollToItem } = useCarousel();
@@ -24,6 +25,11 @@ export default Body;
 
 function TabFilters({ handleScroll }) {
   const [activeTab, setActiveTab] = useState("All Projects");
+
+  const { setIsLauncherWindowOpen, setRunningAppDetails } =
+    useLauncherContext();
+
+  const { items, activeIndex } = useCarousel();
 
   const tabs = useMemo(() => ["All Projects", "Recents", "Favorites"], []);
 
@@ -61,14 +67,32 @@ function TabFilters({ handleScroll }) {
       }
     };
 
+    const handleLaunchApp = (event) => {
+      if (event.key === "Enter") {
+        console.log("Pressed enter");
+
+        if (items[activeIndex]) {
+          setIsLauncherWindowOpen(true);
+
+          console.log("items", items);
+          console.log("active", activeIndex);
+
+          setRunningAppDetails(items[activeIndex]);
+        }
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
+    window.addEventListener("keypress", handleLaunchApp);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      window.addEventListener("keyup", handleKeyUp);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("keypress", handleLaunchApp);
     };
-  }, [tabs]);
+  }, [tabs, setIsLauncherWindowOpen, items, setRunningAppDetails, activeIndex]);
 
   useEffect(() => {
     const aKey = document.getElementById("key-a");
@@ -220,15 +244,34 @@ function AppsCarousel({ scrollRef, activeIndex, items, scrollToItem }) {
 }
 
 function AppContainer({ index, activeIndex, children, onClick }) {
+  const { items } = useCarousel();
+  const { runningAppDetails, setIsLauncherWindowOpen, setRunningAppDetails } =
+    useLauncherContext();
+
+  const isRunning = items[index]?.appName === runningAppDetails?.appName;
+  const isNull = items[index];
+
   return (
     <div
-      className={`carousel-item h-full flex flex-col aspect-square justify-center items-center bg-slate-950/40 border border-slate-400/40 backdrop-filter backdrop-blur-xl rounded-lg hover:cursor-pointer hover:outline outline-1 overflow-clip ${
+      className={`relative carousel-item h-full flex flex-col aspect-square justify-center items-center bg-slate-950/40 border border-slate-400/40 backdrop-filter backdrop-blur-xl rounded-lg hover:cursor-pointer hover:outline outline-1 overflow-clip ${
         index === activeIndex
           ? "breathing-animation outline outline-offset-2 outline-sky-400"
           : ""
       }`}
-      onClick={onClick}
+      onClick={() => {
+        onClick();
+
+        if (index === activeIndex) {
+          setIsLauncherWindowOpen(true);
+          setRunningAppDetails(items[activeIndex]);
+        }
+      }}
     >
+      {isRunning && isNull && (
+        <div className="absolute top-2 right-2  px-3 py-1 rounded-lg border border-slate-500 text-slate-200 bg-slate-950/70 backdrop-filter backdrop-blur-xl">
+          Running
+        </div>
+      )}
       {children}
     </div>
   );

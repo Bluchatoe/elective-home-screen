@@ -14,6 +14,8 @@ export default BottomPart;
 function Controls() {
   const { scroll } = useCarousel();
 
+  const { items, activeIndex } = useCarousel();
+
   return (
     <div className="z-20 flex items-center gap-8">
       <div className="flex items-center gap-4">
@@ -38,10 +40,12 @@ function Controls() {
         <p>Next</p>
       </div>
 
-      <div className="flex items-center gap-4">
-        <EnterkeyIcon />
-        <p>Lauch App</p>
-      </div>
+      {items[activeIndex] !== null && (
+        <div className="flex items-center gap-4">
+          <EnterkeyIcon />
+          <p>Lauch App</p>
+        </div>
+      )}
     </div>
   );
 }
