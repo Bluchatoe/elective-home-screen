@@ -261,7 +261,7 @@ function AppContainer({ index, activeIndex, children, onClick }) {
       onClick={() => {
         onClick();
 
-        if (index === activeIndex) {
+        if (index === activeIndex && isNull) {
           setIsLauncherWindowOpen(true);
           setRunningAppDetails(items[activeIndex]);
         }
