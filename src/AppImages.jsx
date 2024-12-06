@@ -1,6 +1,6 @@
-import GembotsSrc from "./assets/appPictures/gembottemp.jpg";
-import ImageClassSrc from "./assets/appPictures/imageclasstemp.jpg";
-import PenaltyMotoSrc from "./assets/appPictures/penaltymototemp.jpg";
+import GembotsSrc from "./assets/appPictures/gembottemp.png";
+import ImageClassSrc from "./assets/appPictures/imageclasstemp.png";
+import PenaltyMotoSrc from "./assets/appPictures/penaltymototemp.png";
 
 import GembotsBgSrc from "./assets/appPictures/gembotbgtemp.jpg";
 import ImageClassBgSrc from "./assets/appPictures/imageclassbgtemp.jpg";

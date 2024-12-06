@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useLauncherContext } from "./hooks/context";
 import GemBots from "./projects/chatbot/GemBots";
 import ExpertSystem from "./projects/expert-system/ExpertSystem";
 import ImageClassifier from "./projects/image-classifier/ImageClassifier";
 
 const AppWindow = () => {
+  const [key, setKey] = useState(0);
   const {
     isLauncherWindowOpen,
     setIsLauncherWindowOpen,
@@ -54,7 +56,7 @@ const AppWindow = () => {
         {/* App Body */}
         <div className="w-full h-full max-h-full overflow-clip bg-slate-200">
           {runningAppDetails?.appName === "Image Classifier" && (
-            <ImageClassifier />
+            <ImageClassifier key={key} setKey={setKey} />
           )}
           {runningAppDetails?.appName === "GemBots" && <GemBots />}
           {runningAppDetails?.appName === "PenaltyMoto PH" && <ExpertSystem />}

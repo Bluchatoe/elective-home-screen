@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as tmImage from "@teachablemachine/image";
 
-const ImageClassifier = () => {
+const ImageClassifier = ({ setKey }) => {
   const webcamRef = useRef(null);
   const webcamWrapper = useRef(null);
   const [model, setModel] = useState(null);
@@ -14,7 +14,10 @@ const ImageClassifier = () => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCamOn, setIsCamOn] = useState(false);
+  const [dimension, setDimension] = useState({});
   const animationIdRef = useRef(null); // Store the animation frame ID
+
+  console.log("dimenstion", dimension);
 
   const URL = "https://teachablemachine.withgoogle.com/models/42ES1U83Q/";
 
@@ -32,7 +35,11 @@ const ImageClassifier = () => {
     // Setup the webcam
     try {
       const flip = true; // Flip the webcam
-      const webcam = new tmImage.Webcam(700, 500, flip);
+      const webcam = new tmImage.Webcam(
+        dimension.width,
+        dimension.height,
+        flip
+      );
       await webcam.setup(); // Request access to webcam
       await webcam.play();
       webcamRef.current = webcam;
@@ -77,6 +84,7 @@ const ImageClassifier = () => {
 
     webcamRef.current.stop();
     webcamRef.current = null;
+    setKey((prev) => prev + 1);
   };
 
   const closeCam = () => {
@@ -90,6 +98,12 @@ const ImageClassifier = () => {
     return () => {
       window.cancelAnimationFrame(animationIdRef.current);
     };
+  }, []);
+
+  useEffect(() => {
+    if (webcamWrapper.current) {
+      setDimension(webcamWrapper.current.getBoundingClientRect());
+    }
   }, []);
 
   return (
@@ -151,7 +165,8 @@ const ImageClassifier = () => {
 
         <div className="classification-body flex bg-slate-100 h-full p-2 gap-2">
           <div
-            className="cam-section w-[70%] h-full bg-slate-800 rounded-md flex justify-center items-center text-white"
+            ref={webcamWrapper}
+            className="cam-section w-[70%] h-full bg-slate-800 rounded-md flex justify-center items-center text-white overflow-hidden"
             style={{
               background: `linear-gradient(
           109.6deg,
@@ -162,8 +177,8 @@ const ImageClassifier = () => {
             }}
           >
             <div id="webcam-container">
-              <div id="cam-placeholder">
-                <div className="w-full h-full" ref={webcamWrapper}>
+              <div id="cam-placeholder w-full h-full">
+                <div className="w-full h-full">
                   {webcamRef.current && (
                     <div
                       className="w-full h-full bg-white"
