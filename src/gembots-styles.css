@@ -290,6 +290,17 @@
   transition: transform 0.5s ease, opacity 0.5s ease; /* Add transition for smooth sliding */
 }
 
+.message-bubble ul {
+  list-style-type: circle;
+  padding-left: 24px;
+}
+
+.message-bubble ol {
+  list-style-type: decimal;
+  padding-left: 24px;
+  margin-bottom: 24px;
+}
+
 .chatbot-bubble {
   align-self: flex-start;
   color: #e9e9e9;
@@ -312,9 +323,7 @@ th {
 }
 
 .chatbot-bubble h3 {
-  margin: 0 0 5px 0;
   font-size: 1rem; /* Slightly larger than paragraph */
-  color: #dddddd; /* Slightly darker for the name */
 }
 
 .user-message-group {
@@ -524,8 +533,8 @@ ol {
   margin-bottom: 10px;
   background-color: #0093e9;
   background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
-  --webkit-background-clip: text;
-  --webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-shadow: 0 0 8px rgba(144, 214, 255, 0.26); /* Subtle glow effect */
 }
 
@@ -538,7 +547,7 @@ ol {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  font-size: large;
+  font-size: normal;
 }
 
 .prompt-button:hover {
@@ -639,4 +648,8 @@ ol {
   .button-container {
     grid-template-rows: auto;
   }
+}
+
+.chatbot-message-group li {
+  margin-bottom: 16px;
 }

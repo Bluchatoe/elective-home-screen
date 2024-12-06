@@ -2,9 +2,11 @@ import SparklesSvg from "../../assets/sparkles.svg";
 import BlueBot from "../../assets/bluebot.png";
 import PaperplaneIcon from "../../assets/paper-plane-top.svg";
 import InfoIcon from "../../assets/info-icon.svg";
+import LoadingIcon from "../../assets/loading-spin.gif";
 import bg from "../../assets/bg.jpg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import ReactMarkdown from "react-markdown";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -22,21 +24,27 @@ const GemBots = () => {
   };
 
   const handleUserInputSubmit = async (event) => {
-    setIsLoading(true);
-    setUserInput("");
     event.preventDefault();
 
-    const result = await generatePrompt(userInput);
+    setIsLoading(true);
+    setUserInput("");
+
+    setMessageHistory((prev) => [...prev, { text: userInput, type: "user" }]);
+
+    const result = await generateContent(userInput);
 
     console.log("Submit", result);
+
+    setMessageHistory((prev) => [...prev, { text: result, type: "chatbot" }]);
 
     setIsLoading(false);
   };
 
-  const generatePrompt = async (userInput) => {
+  const generateContent = async (userInput) => {
     if (genAiModel) {
       const result = await genAiModel.generateContent([userInput]);
       console.log(result.response.text());
+
       return result.response.text();
     }
   };
@@ -48,12 +56,12 @@ const GemBots = () => {
     setGenAiModel(model);
   }, []);
 
+  // Scroll to the bottom div whenever messageHistory changes
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to the bottom div
     }
-  }, [messageHistory]);
+  }, [messageHistory]); // Trigger scroll when messageHistory changes
 
   return (
     <div className="h-full w-full flex justify-center items-center relative">
@@ -116,24 +124,41 @@ const GemBots = () => {
           <div className="chat-container">
             {messageHistory.length !== 0 &&
               messageHistory.map((m, i) => {
-                return <div key={i}>{m.message}</div>;
+                return (
+                  <MessageBubble
+                    key={i}
+                    text={m.text}
+                    isUser={m.type === "user"}
+                  />
+                );
               })}
+
+            {isLoading && (
+              <p className="text-white pl-2">
+                BlueBot is Generating a Response...
+              </p>
+            )}
+
+            {messageHistory.length === 0 && (
+              <GenerateRandomPrompts
+                generateContent={generateContent}
+                model={genAiModel}
+                setMessageHistory={setMessageHistory}
+                setIsLoading={setIsLoading}
+              />
+            )}
+
+            <div className="w-full h-10" ref={chatContainerRef} />
           </div>
 
           <div className="typing-container w-full">
             <div className="typing-content">
               <div className="typing-textarea flex items-center">
-                <form onSubmit={handleUserInputSubmit} className="w-full">
-                  <input
-                    className="bg-transparent w-full px-4 focus:outline-none text-white"
-                    type="text"
-                    id="chat-input"
-                    spellCheck="false"
-                    placeholder="Enter your message..."
-                    value={userInput}
-                    onChange={handleUserInputChange}
-                  />
-                </form>
+                <UserInput
+                  handleUserInputChange={handleUserInputChange}
+                  userInput={userInput}
+                  handleUserInputSubmit={handleUserInputSubmit}
+                />
 
                 <TypingButtons />
               </div>
@@ -160,63 +185,95 @@ const MessageBubble = ({ text, isUser }) => {
           isUser ? "user-bubble" : "chatbot-bubble"
         }`}
       >
-        {!isUser && <h3>BlueBot</h3>}
-        <p>{text}</p>
+        {!isUser && <h3 className="font-medium text-sky-300 mb-2">BlueBot</h3>}
+        <ReactMarkdown>{text}</ReactMarkdown>
       </div>
       {isUser && <span className="message-time">{messageTime}</span>}
     </div>
   );
 };
 
-const GenerateRandomPrompts = ({ askModelFor4RandomPrompts, APIHandler }) => {
+const UserInput = ({
+  handleUserInputSubmit,
+  userInput,
+  handleUserInputChange,
+}) => {
+  return (
+    <form onSubmit={handleUserInputSubmit} className="w-full">
+      <input
+        className="bg-transparent w-full px-4 focus:outline-none text-white"
+        type="text"
+        id="chat-input"
+        spellCheck="false"
+        placeholder="Enter your message..."
+        value={userInput}
+        onChange={handleUserInputChange}
+      />
+    </form>
+  );
+};
+
+const GenerateRandomPrompts = ({
+  model,
+  generateContent,
+  setMessageHistory,
+  setIsLoading,
+}) => {
   const [loading, setLoading] = useState(false);
   const [prompts, setPrompts] = useState([]);
-  const [showPromptContainer, setShowPromptContainer] = useState(true);
 
-  const fetchPrompts = async () => {
-    setLoading(true);
-
-    try {
-      // Fetch prompts and clean them
-      const fetchedPrompts = await askModelFor4RandomPrompts();
-      const cleanedPrompts = fetchedPrompts.map((prompt) =>
-        prompt.replace(/^\d+\.\s*/, "")
-      );
-
-      // Randomize and select 4 prompts
-      const selectedPrompts = cleanedPrompts
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 4);
-
-      setPrompts(selectedPrompts);
-    } catch (error) {
-      console.error("Error fetching prompts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePromptClick = (prompt) => {
+  const handlePromptClick = async (prompt) => {
     // Simulate filling input and executing the API handler
-    APIHandler(prompt);
-    setShowPromptContainer(false); // Hide the prompt container
+
+    setMessageHistory((prev) => [...prev, { text: prompt, type: "user" }]);
+
+    setIsLoading(true);
+
+    const result = await generateContent(prompt);
+
+    setMessageHistory((prev) => [...prev, { text: result, type: "chatbot" }]);
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
+    const fetchPrompts = async () => {
+      setLoading(true);
+
+      try {
+        // Fetch prompts and clean them
+        const fetchedPrompts = await generateContent(
+          "Give me 4 short random open-ended questions for the chatbot."
+        );
+
+        // Split into an array using regex
+        const promptsArray = fetchedPrompts
+          ?.trim() // Remove any leading or trailing whitespace
+          ?.split(/\d+\.\s+/) // Split on numbers followed by a period and whitespace
+          ?.filter(Boolean); // Remove empty strings
+
+        console.log("promptsArray", promptsArray);
+
+        setPrompts(promptsArray);
+      } catch (error) {
+        console.error("Error fetching prompts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchPrompts(); // Fetch prompts when the component mounts
-  }, []);
+  }, [model]);
+
+  console.log("prompts", prompts);
 
   if (loading) {
     return (
       <div className="loading-prompts">
-        <img src="/assets/loading-spin.gif" alt="Loading..." />
+        <img src={LoadingIcon} alt="Loading..." />
         <p>Loading prompts</p>
       </div>
     );
-  }
-
-  if (!showPromptContainer || prompts.length === 0) {
-    return null; // Hide container if dismissed or no prompts
   }
 
   return (
@@ -226,7 +283,7 @@ const GenerateRandomPrompts = ({ askModelFor4RandomPrompts, APIHandler }) => {
         <p>Here are some things you can ask me:</p>
       </div>
       <div className="button-container">
-        {prompts.map((prompt, index) => (
+        {prompts?.map((prompt, index) => (
           <button
             key={index}
             className="prompt-button"
