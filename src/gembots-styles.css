@@ -1,0 +1,642 @@
+.sidebar {
+  flex: 1;
+  background-color: #070a0e7c;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  max-width: 300px; /* Added max-width for optimal sidebar width */
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+}
+
+.sidebar-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #0a1f33, #1a3a5a, #2a537f);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(173, 216, 230, 0.5); /* Subtle border with light blue color */
+  box-shadow: 0 0 8px rgba(100, 149, 237, 0.7); /* Bluer and more intense glow */
+}
+
+.sidebar-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar-title h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #ffffff; /* Changed to white for better contrast */
+}
+
+.sidebar-title p {
+  margin: 0;
+  font-size: 0.8em;
+  color: #add8e6; /* Changed to pastel light blue for better contrast */
+}
+
+.window-btns {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+}
+
+.window-btns .circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #3498db; /* Default blue color */
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for hover effect */
+  cursor: pointer;
+}
+
+.window-btns .circle:hover {
+  background-color: #2980b9; /* Darker blue on hover */
+  border-color: #1c5980; /* Even darker blue border on hover */
+}
+
+.window-btns .circle:nth-child(1) {
+  background-color: #5dade2; /* Lighter blue */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Lower transparency white border */
+}
+
+.window-btns .circle:nth-child(2) {
+  background-color: #1f618d; /* Medium blue */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Lower transparency white border */
+}
+
+.window-btns .circle:nth-child(3) {
+  background-color: #154360; /* Darker blue */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Lower transparency white border */
+}
+
+.chatbot-lists {
+  padding: 10px;
+}
+
+.chatbot-lists h3 {
+  margin-bottom: 10px;
+  font-size: 1em; /* Decreased font size for hierarchy purposes */
+  color: #cccccc; /* Faded color for better contrast on dark background */
+  padding-left: 8px;
+}
+
+.chatbot-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background-color: transparent;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.chatbot-card:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatbot-card.active {
+  opacity: 1;
+  background-color: rgba(
+    173,
+    216,
+    230,
+    0.1
+  ); /* Slightly more visible background with a subtle blueish hue */
+  transform: scale(1.02); /* Slightly enlarge the card */
+  box-shadow: 0 0 5px rgba(173, 216, 230, 0.2); /* Add a subtle shadow with a blueish hue */
+  border: 1px solid rgba(173, 216, 230, 0.2); /* Subtle border line with a blueish hue */
+}
+
+.chatbot-avatar {
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  min-width: 40px;
+  max-width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: clip; /* Added overflow clip */
+  border: 1px solid rgba(255, 255, 255, 0.863); /* Subtle white border */
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Subtle glow effect */
+  filter: brightness(0.9); /* Added darkening filter */
+}
+
+.chatbot-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover; /* Added object-fit cover */
+}
+
+.chatbot-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chatbot-name {
+  margin: 0;
+  font-size: 1em; /* Decreased font size for hierarchy purposes */
+  color: #ffffff; /* Changed to white for better contrast on dark background */
+}
+
+.chatbot-description {
+  margin: 0;
+  font-size: 0.8em; /* Decreased font size for hierarchy purposes */
+  color: #cccccc; /* Changed to light grey for better contrast on dark background */
+  white-space: nowrap; /* Ensure the text stays on one line */
+  overflow: hidden; /* Hide the overflowed text */
+  text-overflow: ellipsis; /* Add ellipsis when text overflows */
+  max-width: 200px; /* Added max-width to limit the width of the text */
+}
+
+.chat-wrapper {
+  display: flex;
+
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  max-height: 700px;
+
+  overflow: hidden;
+
+  background: rgba(19, 32, 46, 0.678);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(12.5px);
+  -webkit-backdrop-filter: blur(12.5px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.transparent-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.transparent-button img {
+  width: 30px;
+  height: 30px;
+  filter: invert(100%);
+}
+
+.transparent-button:hover {
+  transform: scale(1.1);
+}
+
+.chat-header {
+  height: 70px;
+  border-bottom: 1px solid rgba(179, 179, 179, 0.137);
+  /* background: linear-gradient(90deg, #3a47d5 0%, #00d2ff 100%); */
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.chat-header .chatbot-avatar {
+  margin-right: 10px;
+}
+.chat-header .chatbot-description {
+  font-size: 0.8em;
+  color: #cccccc;
+  max-width: 100%;
+}
+
+.chat-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  background-color: white;
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 4px solid white;
+}
+
+.chat-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.window-buttons {
+  margin-left: auto;
+}
+.window-buttons button {
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+.chat-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  max-height: 100%;
+  overflow: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #add8e6 transparent; /* For Firefox */
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.chat-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background-color: #add8e6; /* Light blue */
+  border-radius: 10px;
+  border: 2px solid transparent; /* Adds space around the thumb */
+  background-clip: content-box; /* Ensures the border is visible */
+}
+
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 12px;
+  font-size: 1rem;
+  line-height: 1.4;
+  transition: transform 0.5s ease, opacity 0.5s ease; /* Add transition for smooth sliding */
+}
+
+.chatbot-bubble {
+  align-self: flex-start;
+  color: #e9e9e9;
+  overflow: hidden; /* Ensure content is hidden initially */
+  animation: reveal 0.5s ease-out; /* Apply reveal animation */
+  background-color: #04131d;
+  border-radius: 0 12px 12px 12px;
+  padding: 30px;
+  border: 1px solid rgb(90, 90, 90);
+  margin-bottom: 10px;
+}
+
+.chatbot-bubble table,
+tr,
+td,
+th {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 8px;
+}
+
+.chatbot-bubble h3 {
+  margin: 0 0 5px 0;
+  font-size: 1rem; /* Slightly larger than paragraph */
+  color: #dddddd; /* Slightly darker for the name */
+}
+
+.user-message-group {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Align user messages to the right */
+}
+
+.user-message-group span {
+  color: rgb(182, 182, 182);
+  font-size: 0.8rem;
+  float: right;
+  margin-top: 5px;
+}
+
+.user-bubble {
+  background: linear-gradient(135deg, #5322c4, #026bf5, #049edb);
+  align-self: flex-end;
+  color: white;
+  outline: 1px solid rgba(255, 255, 255, 0.253); /* Subtle white outline */
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Subtle glow effect */
+  border-radius: 12px 12px 0 12px; /* No border radius on bottom right */
+  animation: pop 0.3s ease-out; /* Apply pop animation */
+  word-break: break-all;
+  max-width: 100%;
+}
+
+.typing-container {
+  border-top: 1px solid rgba(175, 175, 175, 0.247);
+}
+
+.typing-content {
+  padding: 10px;
+}
+
+.typing-textarea {
+  padding-right: 4px;
+  width: 100%;
+  display: flex;
+  align-items: start;
+  border: 1px solid rgba(190, 189, 189, 0.068);
+  border-radius: 12px;
+  background-color: rgba(
+    1,
+    12,
+    26,
+    0.5
+  ); /* Dark slight transparent bg color with hint of blue hue */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for smooth effect */
+}
+
+.typing-textarea textarea {
+  width: 100%;
+
+  border-radius: 8px 0 0 8px;
+  border: none;
+  resize: none;
+  padding: 12px 16px;
+
+  color: white;
+  font-size: 1.1rem;
+  background-color: transparent;
+  outline: none; /* Remove outline from textarea */
+}
+
+.typing-textarea:focus-within {
+  border-color: #95dcfd; /* Match sidebar-icon border color */
+  box-shadow: 0 0 8px rgba(59, 177, 255, 0.76); /* Match sidebar-icon shadow */
+}
+
+#send-btn {
+  cursor: pointer;
+  height: 100%;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#send-icon {
+  object-fit: contain;
+}
+
+.svg-icon {
+  width: 24px; /* Set a default width */
+  height: 24px; /* Set a default height */
+  fill: currentColor; /* Use currentColor to inherit color from parent */
+  display: inline-block; /* Ensure it displays inline with text */
+  vertical-align: middle; /* Align it vertically with text */
+}
+#emote-btn {
+  color: lightblue;
+}
+
+.typing-buttons {
+  display: flex;
+  align-items: center; /* Align items vertically centered */
+  justify-content: space-between; /* Distribute space between items */
+}
+
+#emote-btn,
+#send-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+#emote-btn {
+  padding: 12px;
+  padding-right: 5px;
+}
+
+ul {
+  padding-left: 15px;
+  margin-bottom: 15px;
+}
+
+ol {
+  padding-left: 15px;
+  margin-bottom: 15px;
+}
+
+.chatbot-bubble p {
+  margin-bottom: 15px;
+}
+
+.loading-state {
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 10px 0;
+  display: inline-block;
+}
+
+@keyframes ellipsis {
+  0% {
+    content: "";
+  }
+  33% {
+    content: ".";
+  }
+  66% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+.loading-state::after {
+  content: "";
+  animation: ellipsis 1s infinite steps(4, end);
+}
+
+.prompt-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  height: 100%;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  opacity: 0; /* Start with opacity 0 for fade-in */
+  animation: fadeIn 0.5s forwards; /* Apply fade-in animation */
+}
+
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 100px);
+  gap: 10px;
+  margin-top: auto;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.opening-message {
+  margin-bottom: 10px;
+  color: #cccccc;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.opening-message h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  max-width: 500px;
+  margin-bottom: 10px;
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+  --webkit-background-clip: text;
+  --webkit-text-fill-color: transparent;
+  text-shadow: 0 0 8px rgba(144, 214, 255, 0.26); /* Subtle glow effect */
+}
+
+.prompt-button {
+  margin: 5px;
+  padding: 8px 12px;
+  background-color: #04131d;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle white border */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: large;
+}
+
+.prompt-button:hover {
+  background-color: #2980b9;
+}
+
+.chatbot-message-group {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align chatbot messages to the left */
+  color: white;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes reveal {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 500px; /* Adjust as needed */
+    opacity: 1;
+  }
+}
+
+.loading-prompts {
+  color: white;
+  font-size: 2rem; /* Increased font size */
+  font-weight: 500;
+  margin: 10px 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: loadingAnimation 1s infinite; /* Added loading animation */
+  position: relative;
+}
+
+@keyframes loadingAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ellipsisAnimation {
+  0% {
+    content: ".";
+  }
+  33% {
+    content: "..";
+  }
+  66% {
+    content: "...";
+  }
+  100% {
+    content: "";
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    display: none;
+  }
+  .main-chat {
+    height: 100%;
+    max-height: 100%;
+  }
+  .chat-wrapper {
+    max-height: 100%;
+  }
+  .button-container {
+    grid-template-rows: auto;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .button-container {
+    grid-template-rows: auto;
+  }
+}

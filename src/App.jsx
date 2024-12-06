@@ -1,4 +1,5 @@
 import "./App.css";
+import "./gembots-styles.css";
 import AppWindow from "./AppWindow";
 import Background from "./Background";
 import Foreground from "./Foreground";

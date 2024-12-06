@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { dialogues } from "./dialogues";
 import { sectionsList } from "./sections";
 import LogoWhite from "../../assets/helmet_white.png";
+import { useNavigate } from "react-router-dom";
 
 export default function ExpertSystemBody() {
   return (
@@ -369,9 +370,11 @@ function ClockIcon() {
 }
 
 function ReferenceLink({ sectionId }) {
+  const navigate = useNavigate();
+
   const handleClick = () => {
     // Programmatically navigate to the law page with the sectionNum as a query parameter
-    window.open(`/penalty-moto/law?id=${sectionId}`, "_blank");
+    navigate(`/law?id=${sectionId}`);
   };
 
   return (

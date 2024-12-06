@@ -26,8 +26,11 @@ export default Body;
 function TabFilters({ handleScroll }) {
   const [activeTab, setActiveTab] = useState("All Projects");
 
-  const { setIsLauncherWindowOpen, setRunningAppDetails } =
-    useLauncherContext();
+  const {
+    setIsLauncherWindowOpen,
+    setRunningAppDetails,
+    isLauncherWindowOpen,
+  } = useLauncherContext();
 
   const { items, activeIndex } = useCarousel();
 
@@ -38,7 +41,7 @@ function TabFilters({ handleScroll }) {
     const eKey = document.getElementById("key-e");
 
     const handleKeyDown = (event) => {
-      if (event.key === "q") {
+      if (event.key === "q" && !isLauncherWindowOpen) {
         qKey.classList.add("keyboard-caps-btn-active");
 
         // Move to the left tab
@@ -47,7 +50,7 @@ function TabFilters({ handleScroll }) {
           const newIndex = (currentIndex - 1 + tabs.length) % tabs.length; // Wrap around
           return tabs[newIndex];
         });
-      } else if (event.key === "e") {
+      } else if (event.key === "e" && !isLauncherWindowOpen) {
         eKey.classList.add("keyboard-caps-btn-active");
 
         // Move to the right tab
@@ -60,7 +63,7 @@ function TabFilters({ handleScroll }) {
     };
 
     const handleKeyUp = (event) => {
-      if (event.key === "q") {
+      if (event.key === "q" && !isLauncherWindowOpen) {
         qKey.classList.remove("keyboard-caps-btn-active");
       } else if (event.key === "e") {
         eKey.classList.remove("keyboard-caps-btn-active");
@@ -68,7 +71,7 @@ function TabFilters({ handleScroll }) {
     };
 
     const handleLaunchApp = (event) => {
-      if (event.key === "Enter") {
+      if (event.key === "Enter" && !isLauncherWindowOpen) {
         console.log("Pressed enter");
 
         if (items[activeIndex]) {
@@ -92,19 +95,32 @@ function TabFilters({ handleScroll }) {
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("keypress", handleLaunchApp);
     };
-  }, [tabs, setIsLauncherWindowOpen, items, setRunningAppDetails, activeIndex]);
+  }, [
+    tabs,
+    setIsLauncherWindowOpen,
+    items,
+    setRunningAppDetails,
+    activeIndex,
+    isLauncherWindowOpen,
+  ]);
 
   useEffect(() => {
     const aKey = document.getElementById("key-a");
     const dKey = document.getElementById("key-d");
 
     const handleKeyAandD = (event) => {
-      if (event.key === "d" || event.key === "ArrowRight") {
+      if (
+        (event.key === "d" || event.key === "ArrowRight") &&
+        !isLauncherWindowOpen
+      ) {
         dKey.classList.add("keyboard-caps-btn-active");
 
         // Move to the right tab
         handleScroll("right");
-      } else if (event.key === "a" || event.key === "ArrowLeft") {
+      } else if (
+        (event.key === "a" || event.key === "ArrowLeft") &&
+        !isLauncherWindowOpen
+      ) {
         aKey.classList.add("keyboard-caps-btn-active");
 
         handleScroll("left");
@@ -112,7 +128,10 @@ function TabFilters({ handleScroll }) {
     };
 
     const handleKeyUp = (event) => {
-      if (event.key === "d" || event.key === "ArrowRight") {
+      if (
+        (event.key === "d" || event.key === "ArrowRight") &&
+        !isLauncherWindowOpen
+      ) {
         dKey.classList.remove("keyboard-caps-btn-active");
       } else if (event.key === "a" || event.key === "ArrowLeft") {
         aKey.classList.remove("keyboard-caps-btn-active");
@@ -126,7 +145,7 @@ function TabFilters({ handleScroll }) {
       window.removeEventListener("keydown", handleKeyAandD);
       window.addEventListener("keyup", handleKeyUp);
     };
-  }, [handleScroll]);
+  }, [handleScroll, isLauncherWindowOpen]);
 
   return (
     <div className="p-3 flex items-center">

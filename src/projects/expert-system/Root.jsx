@@ -40,7 +40,7 @@ function Header() {
           <ul className="h-full flex justify-center items-center gap-6">
             <li>
               <NavLink
-                to="./expert-system"
+                to="/"
                 className={({ isActive }) =>
                   isActive
                     ? "text-amber-500 font-medium hover:text-amber-700 flex items-center gap-2"

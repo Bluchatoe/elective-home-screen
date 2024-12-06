@@ -13,7 +13,7 @@ const router = createBrowserRouter([
         element: <Law />,
       },
       {
-        path: "expert-system",
+        path: "/",
         element: <ExpertSystemBody />,
       },
     ],

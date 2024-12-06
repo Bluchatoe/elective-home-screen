@@ -1,6 +1,13 @@
+import SparklesSvg from "../../assets/sparkles.svg";
+import BlueBot from "../../assets/bluebot.png";
+import PaperplaneIcon from "../../assets/paper-plane-top.svg";
+import InfoIcon from "../../assets/info-icon.svg";
+import bg from "../../assets/bg.jpg";
+
 const GemBots = () => {
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full flex justify-center items-center relative">
+      <img src={bg} alt="" className="absolute inset-0 object-cover" />
       <div className="chat-wrapper">
         <div className="sidebar">
           <div className="sidebar-header">
@@ -11,7 +18,7 @@ const GemBots = () => {
             </div>
             <div className="sidebar-title">
               <div className="sidebar-icon">
-                <img src="assets/sparkles.svg" alt="Sparkles Icon" />
+                <img src={SparklesSvg} alt="Sparkles Icon" />
               </div>
               <div>
                 <h3>GemBots</h3>
@@ -24,7 +31,7 @@ const GemBots = () => {
 
               <div className="chatbot-card active">
                 <div className="chatbot-avatar">
-                  <img src="assets/bluebot.png" alt="Moon Chatbot Avatar" />
+                  <img src={BlueBot} alt="Moon Chatbot Avatar" />
                 </div>
                 <div className="chatbot-info">
                   <h4 className="chatbot-name">BlueBot</h4>
@@ -37,10 +44,10 @@ const GemBots = () => {
           </div>
         </div>
 
-        <div className="main-chat">
+        <div className="main-chat w-full flex flex-col">
           <div className="chat-header">
             <div className="chatbot-avatar">
-              <img src="assets/bluebot.png" alt="Moon Chatbot Avatar" />
+              <img src={BlueBot} alt="Moon Chatbot Avatar" />
             </div>
             <div className="chatbot-info">
               <h4 className="chatbot-name">BlueBot</h4>
@@ -51,14 +58,14 @@ const GemBots = () => {
 
             <div className="window-buttons">
               <button className="transparent-button">
-                <img width="30" height="30" src="assets/info-icon.svg" alt="" />
+                <img width="30" height="30" src={InfoIcon} alt="" />
               </button>
             </div>
           </div>
 
           <div className="chat-container"></div>
 
-          <div className="typing-container">
+          <div className="typing-container w-full">
             <div className="typing-content">
               <div className="typing-textarea">
                 <textarea
@@ -87,7 +94,7 @@ const GemBots = () => {
                   <span id="send-btn" aria-label="Send message">
                     <img
                       id="send-icon"
-                      src="assets/paper-plane-top.svg"
+                      src={PaperplaneIcon}
                       alt="Send message icon"
                     />
                   </span>
@@ -95,11 +102,6 @@ const GemBots = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="collapsible-column">
-          <h2>Collapsible</h2>
-          <p>Additional content here</p>
         </div>
       </div>
     </div>
