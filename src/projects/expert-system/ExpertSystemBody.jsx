@@ -374,7 +374,7 @@ function ReferenceLink({ sectionId }) {
 
   const handleClick = () => {
     // Programmatically navigate to the law page with the sectionNum as a query parameter
-    navigate(`/law?id=${sectionId}`);
+    navigate(`/pedero-elective/law?id=${sectionId}`);
   };
 
   return (

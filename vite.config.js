@@ -4,6 +4,7 @@ import basicSsl from "@vitejs/plugin-basic-ssl";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/pedero-elective/", // Specify the base path
   plugins: [
     react(),
     basicSsl({

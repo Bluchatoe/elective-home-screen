@@ -5,7 +5,7 @@ import ExpertSystemBody from "./ExpertSystemBody";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/pedero-elective",
     element: <Root />,
     children: [
       {
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
         element: <Law />,
       },
       {
-        path: "/",
+        path: "/pedero-elective",
         element: <ExpertSystemBody />,
       },
     ],

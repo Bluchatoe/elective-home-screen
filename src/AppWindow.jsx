@@ -25,7 +25,7 @@ const AppWindow = () => {
               className="rounded-full bg-sky-400 flex items-center justify-center w-4 h-4 border border-slate-100/50"
               onClick={() => {
                 if (runningAppDetails.appName === "PenaltyMoto PH") {
-                  window.history.pushState({}, "", "/");
+                  window.history.pushState({}, "", "/pedero-elective/");
                 }
                 setIsLauncherWindowOpen(false);
                 setRunningAppDetails({});

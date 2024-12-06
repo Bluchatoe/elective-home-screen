@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
+import AiIcon from "../assets/ai-icon.png";
+import Sick from "../assets/sick.png";
+
 function Header() {
   return (
     <header className="w-full flex justify-between items-center relative p-4">
@@ -17,7 +20,7 @@ function Logo() {
   return (
     <div className="z-20 flex items-center gap-3">
       <div className="max-h-12 max-w-12 bg-white  p-1 rounded-lg">
-        <img src="/src/assets/ai-icon.png" alt="Logo icon" />
+        <img src={AiIcon} alt="Logo icon" />
       </div>
 
       <div>
@@ -157,7 +160,7 @@ function Profile() {
       <div className="max-h-12 max-w-12 bg-white rounded-full outline outline-2 outline-sky-400 outline-offset-2 p-1 relative">
         <div className="absolute h-4 w-4 aspect-square bg-sky-400 left-[70%] bottom-[70%] rounded-full  border-white border-2"></div>
 
-        <img src="/src/assets/sick.png" alt="avatar img" />
+        <img src={Sick} alt="avatar img" />
       </div>
 
       <div>

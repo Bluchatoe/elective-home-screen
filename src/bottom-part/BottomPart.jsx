@@ -1,5 +1,8 @@
 import useCarousel from "../useCarousel";
 
+import ComputerIcon from "../assets/computer.png";
+import MouseIcon from "../assets/mouse-no-bg.png";
+
 function BottomPart() {
   return (
     <div className="w-full text-center flex justify-between items-center relative p-5">
@@ -90,14 +93,10 @@ function KeyboardAndMouseIcon() {
   return (
     <div className="z-20 flex items-center gap-4">
       <div className="max-h-14 max-w-14">
-        <img src="/src/assets/computer.png" alt="computer icon" />
+        <img src={ComputerIcon} alt="computer icon" />
       </div>
       <div className="max-h-8 max-w-8">
-        <img
-          className="-rotate-45"
-          src="/src/assets/mouse-no-bg.png"
-          alt="computer icon"
-        />
+        <img className="-rotate-45" src={MouseIcon} alt="computer icon" />
       </div>
     </div>
   );
