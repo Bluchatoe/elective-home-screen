@@ -72,6 +72,8 @@ const ImageClassifier = () => {
     window.cancelAnimationFrame(animationIdRef.current); // Stop the animation loop
     animationIdRef.current = null;
     console.log("Loop stopped");
+    console.log(model);
+    console.log(maxPredictions);
 
     webcamRef.current.stop();
     webcamRef.current = null;

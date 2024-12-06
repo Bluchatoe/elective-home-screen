@@ -4,7 +4,7 @@ import LogoPicture from "../../assets/helmet_amber.png";
 
 export default function Root() {
   return (
-    <div className="w-full h-full max-h-full overflow-clip bg-stone-900 text-white flex flex-col">
+    <div className="expert-system w-full h-full max-h-full overflow-clip bg-stone-900 text-white flex flex-col">
       <Header />
       <Body />
     </div>
